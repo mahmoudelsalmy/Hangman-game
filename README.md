@@ -1,119 +1,26 @@
-#include <iostream>
-#include <string>
-#include <cstdlib> // for srand
-#include <ctime>   // for time(0)
-using namespace std;
+# Hangman Game (C++)
 
-const int attmepts = 7;
-const int WordCount = 26; // word library
-const int players = 5;
+## About the Project
+This project is a **multiplayer Hangman game** implemented in **C++**.  
+The game allows up to **5 players** to compete by guessing words randomly selected from a predefined word list.  
+Each player takes turns, and their score is recorded based on whether they successfully guessed the word.  
 
+This project was developed as part of my **C++ practice** during university to strengthen my understanding of:
+- Game logic implementation  
+- Arrays and string manipulation  
+- Random number generation and input validation  
 
-const string words[WordCount] = {"unitedstates", "china", "unitedkingdom", "france", "india", "germany", "japan", "russia", "brazil", "italy", "australia", "canada", "southkorea", "mexico", "saudi arabia", "egypt", "spain", "turkey", "argentina", "switzerland", "netherlands", "poland", "sweden", "southafrica", "greece", "newzealand"};
+---
 
-// random word to be chosen
-string pickRandomWord() {
-    return words[rand() % WordCount];
-}
+## Features
+- Supports up to **5 players**  
+- Random word selection from a word library  
+- Tracks player scores individually  
+- Limited attempts (7) to guess each word  
+- Displays progress of the word with `_` for unguessed letters  
+- Declares winners and losers at the end  
 
-// displaying current state of the word
-void displayWord(const string& word, const bool guessed[]) {
-    for (int i = 0; i < word.length(); i++) {
-        if (guessed[i]) {
-            cout << word[i] << " ";
-        } else {
-            cout << "_ ";
-        }
-    }
-    cout << endl;
-}
-
-//checking if all letters in the woord have been guessed
-bool isWordGuessed(const bool guessed[], int length) {
-    for (int i = 0; i < length; i++) {
-        if (!guessed[i]) return false;
-    }
-    return true;
-}
-
-// the mainly fucntion of the game that handles the word guessing logic
-int Hangman() {
-    string word = pickRandomWord();
-    int wordLength = word.length();
-    bool guessed[wordLength] = {false};
-    int attemptsLeft = attmepts;
-    char guess;
-    bool correctGuess;
-
-    cout << "\nGuess the word! You have " << attmepts << " attempts." << endl;
-    // game loop until 0 attemptes
-    while (attemptsLeft > 0) {
-        displayWord(word, guessed);
-        cout << "\nEnter a letter: ";
-        cin >> guess;
-
-        correctGuess = false;
-
-// check if the guessed letter is in the owrd
-        for (int i = 0; i < wordLength; i++) {
-            if (word[i] == guess && !guessed[i]) {
-                guessed[i] = true;
-                correctGuess = true;
-            }
-        }
-    // gives feedback and results based on the guess
-        if (correctGuess) {
-            cout << "\nGood guess!" << endl;
-        } else {
-            --attemptsLeft;
-            cout << "\nWrong guess! Attempts left: " << attemptsLeft << endl;
-        }
-
-    //check the whole word is guessed or not
-        if (isWordGuessed(guessed, wordLength)) {
-            cout << "\nCongratulations! You guessed the word: " << word << endl;
-            return 1; // Player wins
-        }
-    }
-
-    // if out of attempts u lose
-    cout << "\nYou lost! The word was: " << word << endl;
-    return 0;
-}
-    // main function of the game
-int main() {
-    srand(time(0));
-    int numPlayers;
-    int scores[players] = {0};
-    string playerNames[players];
-
-    cout << "Welcome to the hangman game" << endl;
-    cout << "Enter the number of players (max " << players << "): ";
-    cin >> numPlayers;
-
-    // checking if the number of players are suitable
-    if (numPlayers < 1 || numPlayers > players) {
-        cout << "Invalid number of players. Exiting..." << endl;
-        return 1;
-    }
-
-
-    for (int i = 0; i < numPlayers; i++) {
-        cout << "Enter name for player " << i + 1 << ": ";
-        cin >> playerNames[i];
-    }
-
-
-    for (int i = 0; i < numPlayers; i++) {
-        cout << "\n--- " << playerNames[i] << "'s Turn ---" << endl;
-        scores[i] = Hangman();
-    }
-
-
-    cout << "\n--- Final Scores ---" << endl;
-    for (int i = 0; i < numPlayers; i++) {
-        cout << playerNames[i] << ": " << scores[i] << " points" << endl;
-    }
-
-    return 0;
-}
+## How to Run
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mahmoudelsalmy/Hangman-Game.git
